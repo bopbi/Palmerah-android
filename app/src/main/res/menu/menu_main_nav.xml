@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_recents"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_recents_24dp"
+        app:showAsAction="always"
+        android:title="Recents"/>
+    <item
+        android:id="@+id/menu_contacts"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_contacts_24dp"
+        app:showAsAction="always"
+        android:title="Contacts"/>
+    <item
+        android:id="@+id/menu_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_settings_24dp"
+        app:showAsAction="always"
+        android:title="Settings"
+        />
+</menu>
