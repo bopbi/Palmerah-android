@@ -3,6 +3,13 @@ package com.arjunalabs.palmerah
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.arjunalabs.palmerah.data.Friend
+import com.arjunalabs.palmerah.db.AppDB
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by bobbyadiprabowo on 7/23/17.
@@ -13,6 +20,10 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(ScheduleActivityLifecycleCallback())
+
+        // insert seeder
+        Seeder(this).seed()
+
     }
 
     /**
