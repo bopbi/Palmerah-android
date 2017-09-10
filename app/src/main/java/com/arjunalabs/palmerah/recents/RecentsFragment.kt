@@ -68,7 +68,7 @@ class RecentsFragment : Fragment() {
     }
 
     companion object {
-        val TAG = RecentsFragment::class.java.simpleName
+        val TAG = RecentsFragment::class.java.simpleName!!
     }
 
 }

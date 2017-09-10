@@ -21,14 +21,10 @@ class RecentsAdapter : RecyclerView.Adapter<RecentsAdapter.RecentsViewHolder>() 
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecentsViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.row_recents, parent, false)
-        return RecentsViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+        RecentsViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.row_recents, parent, false))
 
-    override fun getItemCount(): Int {
-        return friendList?.size ?: 0
-    }
+    override fun getItemCount() = friendList?.size ?: 0
 
     class RecentsViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 

@@ -6,4 +6,7 @@ package com.arjunalabs.palmerah.repository
 
 class MessageRepository {
 
+    fun loadMessagesFrom() {
+
+    }
 }

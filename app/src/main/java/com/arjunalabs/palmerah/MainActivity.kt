@@ -10,17 +10,17 @@ import com.arjunalabs.palmerah.settings.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var bottomNavigation : BottomNavigationView
-    lateinit var recentsFragment : RecentsFragment
-    lateinit var contactsFragment : ContactsFragment
-    lateinit var settingsFragment : SettingsFragment
-    lateinit var selectedFragment : Fragment
+    private lateinit var bottomNavigation : BottomNavigationView
+    private lateinit var recentsFragment : RecentsFragment
+    private lateinit var contactsFragment : ContactsFragment
+    private lateinit var settingsFragment : SettingsFragment
+    private lateinit var selectedFragment : Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation_main_nav)
+        bottomNavigation = findViewById(R.id.bottom_navigation_main_nav)
 
         recentsFragment = RecentsFragment()
         contactsFragment = ContactsFragment()
