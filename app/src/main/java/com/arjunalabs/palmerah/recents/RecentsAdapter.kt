@@ -11,6 +11,7 @@ import com.arjunalabs.palmerah.chatroom.ChatroomActivity
 import com.arjunalabs.palmerah.data.Friend
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by bobbyprabowo on 9/2/17.
@@ -50,11 +51,15 @@ class RecentsAdapter : RecyclerView.Adapter<RecentsAdapter.RecentsViewHolder>() 
 
 
         fun bind(friend: Friend) {
-            recentsRowViewModel.bind(friend)
+
+            nameTextView?.text = "Loading..."
 
             val nameDisposable = recentsRowViewModel.nameSubject.subscribe {
                 nameTextView?.text = it
             }
+
+            recentsRowViewModel.bind(friend, Schedulers.computation(), AndroidSchedulers.mainThread())
+
             compositeDisposable.add(nameDisposable)
         }
 
