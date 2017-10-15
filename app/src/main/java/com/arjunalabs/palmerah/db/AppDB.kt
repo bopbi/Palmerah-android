@@ -11,7 +11,7 @@ import com.arjunalabs.palmerah.data.MessageDAO
 /**
  * Created by bobbyprabowo on 9/2/17.
  */
-@Database(entities = arrayOf(Friend::class), version = 1)
+@Database(entities = arrayOf(Friend::class), version = 2)
 abstract class AppDB : RoomDatabase() {
 
     // abstract fun messageDAO() : MessageDAO

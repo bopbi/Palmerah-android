@@ -29,7 +29,10 @@ class Seeder(private val context: Context) {
                 (1..100)
                         .map {
                             Log.i("Seeder", "generate")
-                            Friend(name = "Friend $it")
+                            Friend(userId = it.toLong()
+                                    , name = "Friend $it"
+                                    , avatarUrl = "http://plchldr.co/i/480x480"
+                                    , userStatus = "Dummy Status $it")
                         }
                         .forEach {
                             Log.i("Seeder", "insert")

@@ -1,6 +1,5 @@
 package com.arjunalabs.palmerah.data
 
-import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
@@ -10,7 +9,10 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "friends")
 data class Friend(
-        val name: String) {
+        val userId: Long,
+        val name: String,
+        val avatarUrl: String,
+        val userStatus: String) {
 
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
