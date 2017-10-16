@@ -80,10 +80,10 @@ dependencies {
     //Mockito
     androidTestImplementation "org.mockito:mockito-android:$latest_version"
     //testImplementation "org.mockito:mockito-android:$latest_version"
+    testImplementation "org.mockito:mockito-core:$latest_version"
     androidTestImplementation "com.nhaarman:mockito-kotlin:$latest_version"
-    //testImplementation "com.nhaarman:mockito-kotlin:$latest_version"
-    androidTestImplementation "org.mockito:mockito-core:$latest_version"
-    //testImplementation "org.mockito:mockito-core:$latest_version"
+    testImplementation "com.nhaarman:mockito-kotlin:$latest_version"
+    androidTestCompile 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
 }
 
 configurations.all {
