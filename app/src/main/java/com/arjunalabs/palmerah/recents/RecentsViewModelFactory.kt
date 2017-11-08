@@ -10,7 +10,7 @@ import com.arjunalabs.palmerah.data.FriendDAO
 
 class RecentsViewModelFactory(private val friendDAO: FriendDAO) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>?): T {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass != null) {
             if (modelClass.isAssignableFrom(RecentsViewModel::class.java)) {
                 return RecentsViewModel(friendDAO) as T
