@@ -9,11 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.arjunalabs.palmerah.Injection
 import com.arjunalabs.palmerah.R
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  * Created by bobbyprabowo on 9/2/17.
@@ -26,10 +27,12 @@ class RecentsFragment : Fragment() {
     private lateinit var viewModel : RecentsViewModel
     private val disposable = CompositeDisposable()
 
+    @Inject
+    lateinit var viewModelFactory : RecentsViewModelFactory
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val viewModelFactory = Injection.provideRecentsViewModelFactory(activity)
+        AndroidSupportInjection.inject(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecentsViewModel::class.java)
     }
 
@@ -39,7 +42,7 @@ class RecentsFragment : Fragment() {
         val recentsView = inflater?.inflate(R.layout.fragment_recents, container, false)
 
         if (recentsView != null) {
-            recyclerRecents = recentsView.findViewById<RecyclerView>(R.id.recycler_recents)
+            recyclerRecents = recentsView.findViewById(R.id.recycler_recents)
             recentsAdapter = RecentsAdapter()
             recyclerRecents.adapter = recentsAdapter
             recyclerRecents.layoutManager = LinearLayoutManager(activity)
@@ -50,6 +53,8 @@ class RecentsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        AndroidSupportInjection.inject(this)
 
         disposable.add(viewModel.getAllFriend()
                 .subscribeOn(Schedulers.io())

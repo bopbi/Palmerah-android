@@ -1,5 +1,6 @@
 package com.arjunalabs.palmerah
 
+import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -7,8 +8,20 @@ import android.support.v4.app.Fragment
 import com.arjunalabs.palmerah.contacts.ContactsFragment
 import com.arjunalabs.palmerah.recents.RecentsFragment
 import com.arjunalabs.palmerah.settings.SettingsFragment
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector : DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return dispatchingAndroidInjector
+    }
 
     private lateinit var bottomNavigation : BottomNavigationView
     private lateinit var recentsFragment : RecentsFragment
@@ -18,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         setContentView(R.layout.activity_main)
 
         bottomNavigation = findViewById(R.id.bottom_navigation_main_nav)

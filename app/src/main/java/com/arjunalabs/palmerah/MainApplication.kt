@@ -5,17 +5,25 @@ import android.app.Application
 import android.os.Bundle
 import com.arjunalabs.palmerah.data.Friend
 import com.arjunalabs.palmerah.db.AppDB
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import com.arjunalabs.palmerah.di.DaggerPalmerahComponent
+import com.arjunalabs.palmerah.di.RoomModule
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
 /**
  * Created by bobbyadiprabowo on 7/23/17.
  */
 
-class MainApplication : Application() {
+class MainApplication : Application(), HasActivityInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector : DispatchingAndroidInjector<Activity>
+
+    override fun activityInjector(): AndroidInjector<Activity> {
+        return dispatchingAndroidInjector
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -24,6 +32,12 @@ class MainApplication : Application() {
         // insert seeder
         Seeder(this).seed()
 
+        val roomModule = RoomModule(this)
+        DaggerPalmerahComponent
+                .builder()
+                .roomModule(roomModule)
+                .build()
+                .inject(this)
     }
 
     /**
