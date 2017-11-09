@@ -13,10 +13,8 @@ import javax.inject.Singleton
 class RecentsViewModelFactory @Inject constructor(val friendDAO: FriendDAO) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass != null) {
-            if (modelClass.isAssignableFrom(RecentsViewModel::class.java)) {
-                return RecentsViewModel(friendDAO) as T
-            }
+        if (modelClass.isAssignableFrom(RecentsViewModel::class.java)) {
+            return RecentsViewModel(friendDAO) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
