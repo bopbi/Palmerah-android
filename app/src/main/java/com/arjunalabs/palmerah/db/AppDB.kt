@@ -4,18 +4,19 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import com.arjunalabs.palmerah.data.Friend
-import com.arjunalabs.palmerah.data.FriendDAO
-import com.arjunalabs.palmerah.data.MessageDAO
+import com.arjunalabs.palmerah.data.*
 
 /**
  * Created by bobbyprabowo on 9/2/17.
  */
-@Database(entities = arrayOf(Friend::class), version = 2)
+@Database(entities = arrayOf(Friend::class, Message::class, LastMessage::class), version = 1)
 abstract class AppDB : RoomDatabase() {
 
-    // abstract fun messageDAO() : MessageDAO
+    abstract fun messageDAO() : MessageDAO
+    abstract fun lastMessageDAO() : LastMessageDAO
     abstract fun friendDAO() : FriendDAO
+    abstract fun friendWithMessageDAO() : FriendWithMessageDAO
+    abstract fun friendWithLastMessageDAO() : FriendWithLastMessageDAO
 
     companion object {
 

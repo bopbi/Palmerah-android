@@ -19,7 +19,7 @@ interface FriendDAO {
     fun getAllFriends() : Flowable<List<Friend>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFriend(friend : Friend)
+    fun insertFriend(friend : Friend) : Long
 
     @Query("DELETE FROM friends")
     fun deleteAllFriends()

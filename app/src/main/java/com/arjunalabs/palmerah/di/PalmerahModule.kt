@@ -1,7 +1,7 @@
 package com.arjunalabs.palmerah.di
 
 import com.arjunalabs.palmerah.MainActivity
-import com.arjunalabs.palmerah.recents.RecentsFragment
+import com.arjunalabs.palmerah.chats.ChatsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -15,5 +15,5 @@ abstract class PalmerahModule {
     abstract fun contributeMainActivity() : MainActivity
 
     @ContributesAndroidInjector
-    abstract fun contributeRecentsFragment() : RecentsFragment
+    abstract fun contributeRecentsFragment() : ChatsFragment
 }

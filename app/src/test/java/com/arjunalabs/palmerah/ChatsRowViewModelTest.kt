@@ -1,7 +1,7 @@
 package com.arjunalabs.palmerah
 
-import com.arjunalabs.palmerah.data.Friend
-import com.arjunalabs.palmerah.recents.RecentsRowViewModel
+import com.arjunalabs.palmerah.chats.ChatsRowViewModel
+import com.arjunalabs.palmerah.data.FriendWithLastMessage
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.schedulers.Schedulers
@@ -11,14 +11,14 @@ import org.junit.Test
  * Created by bobbyprabowo on 15/10/17.
  */
 
-class RecentsRowViewModelTest {
+class ChatsRowViewModelTest {
 
     @Test
     fun shouldDisplayName() {
-        val viewModel = RecentsRowViewModel()
+        val viewModel = ChatsRowViewModel()
         val mockedName = "Bob"
-        val mockedFriend : Friend = mock()
-        whenever(mockedFriend.name).thenReturn(mockedName)
+        val mockedFriend : FriendWithLastMessage = mock()
+        whenever(mockedFriend.friend?.name).thenReturn(mockedName)
 
         val testSubscriber = viewModel.nameSubject.subscribeOn(Schedulers.trampoline())
                 .observeOn(Schedulers.trampoline()).test()

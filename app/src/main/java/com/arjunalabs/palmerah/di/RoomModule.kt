@@ -1,9 +1,9 @@
 package com.arjunalabs.palmerah.di
 
 import android.content.Context
-import com.arjunalabs.palmerah.data.FriendDAO
 import com.arjunalabs.palmerah.db.AppDB
-import com.arjunalabs.palmerah.recents.RecentsViewModelFactory
+import com.arjunalabs.palmerah.chats.ChatsViewModelFactory
+import com.arjunalabs.palmerah.data.*
 import dagger.Module
 import dagger.Provides
 
@@ -18,5 +18,17 @@ class RoomModule(val context: Context) {
     fun provideFriendDAO() : FriendDAO = AppDB.getInstance(context)!!.friendDAO()
 
     @Provides
-    fun provideRecentsViewModelFactory() = RecentsViewModelFactory(provideFriendDAO())
+    fun provideMessageDAO() : MessageDAO = AppDB.getInstance(context)!!.messageDAO()
+
+    @Provides
+    fun provideLastMessageDAO() : LastMessageDAO = AppDB.getInstance(context)!!.lastMessageDAO()
+
+    @Provides
+    fun provideFriendWithMessagesDAO() : FriendWithMessageDAO = AppDB.getInstance(context)!!.friendWithMessageDAO()
+
+    @Provides
+    fun provideFriendWithLastMessagesDAO() : FriendWithLastMessageDAO = AppDB.getInstance(context)!!.friendWithLastMessageDAO()
+
+    @Provides
+    fun provideRecentsViewModelFactory() = ChatsViewModelFactory(provideFriendWithLastMessagesDAO())
 }

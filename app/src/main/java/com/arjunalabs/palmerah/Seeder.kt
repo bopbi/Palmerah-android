@@ -3,11 +3,13 @@ package com.arjunalabs.palmerah
 import android.content.Context
 import android.util.Log
 import com.arjunalabs.palmerah.data.Friend
+import com.arjunalabs.palmerah.data.LastMessage
 import com.arjunalabs.palmerah.db.AppDB
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 /**
  * Created by bobbyprabowo on 9/3/17.
@@ -36,7 +38,10 @@ class Seeder(private val context: Context) {
                         }
                         .forEach {
                             Log.i("Seeder", "insert")
-                            appDB.friendDAO().insertFriend(it)
+                            val friendId = appDB.friendDAO().insertFriend(it)
+
+                            val lastMessage = LastMessage(friend_id = friendId, date = Date().time, isSender = true, text = "AAAAA")
+                            appDB.lastMessageDAO().insertLastMessage(lastMessage)
                         }
             }
                     .subscribeOn(Schedulers.io())

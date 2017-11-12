@@ -1,4 +1,4 @@
-package com.arjunalabs.palmerah.recents
+package com.arjunalabs.palmerah.chats
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -20,31 +20,31 @@ import javax.inject.Inject
  * Created by bobbyprabowo on 9/2/17.
  */
 
-class RecentsFragment : Fragment() {
+class ChatsFragment : Fragment() {
 
     private lateinit var recyclerRecents : RecyclerView
-    private lateinit var recentsAdapter : RecentsAdapter
-    private lateinit var viewModel : RecentsViewModel
+    private lateinit var chatsAdapter: ChatsAdapter
+    private lateinit var viewModel : ChatsViewModel
     private val disposable = CompositeDisposable()
 
     @Inject
-    lateinit var viewModelFactory : RecentsViewModelFactory
+    lateinit var viewModelFactory : ChatsViewModelFactory
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         AndroidSupportInjection.inject(this)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecentsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChatsViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val recentsView = inflater?.inflate(R.layout.fragment_recents, container, false)
+        val recentsView = inflater.inflate(R.layout.fragment_recents, container, false)
 
         if (recentsView != null) {
             recyclerRecents = recentsView.findViewById(R.id.recycler_recents)
-            recentsAdapter = RecentsAdapter()
-            recyclerRecents.adapter = recentsAdapter
+            chatsAdapter = ChatsAdapter()
+            recyclerRecents.adapter = chatsAdapter
             recyclerRecents.layoutManager = LinearLayoutManager(activity)
         }
 
@@ -60,8 +60,8 @@ class RecentsFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    recentsAdapter.friendList = it
-                    recentsAdapter.notifyDataSetChanged()
+                    chatsAdapter.friendList = it
+                    chatsAdapter.notifyDataSetChanged()
                 }, {
                     error -> Log.e(TAG, "Unable to get recents", error)
                 }))
@@ -73,7 +73,7 @@ class RecentsFragment : Fragment() {
     }
 
     companion object {
-        val TAG = RecentsFragment::class.java.simpleName!!
+        val TAG = ChatsFragment::class.java.simpleName!!
     }
 
 }

@@ -29,8 +29,10 @@ class MainApplication : Application(), HasActivityInjector {
         super.onCreate()
         registerActivityLifecycleCallbacks(ScheduleActivityLifecycleCallback())
 
-        // insert seeder
-        Seeder(this).seed()
+        if (BuildConfig.DEBUG) {
+            // insert seeder
+            Seeder(this).seed()
+        }
 
         val roomModule = RoomModule(this)
         DaggerPalmerahComponent
