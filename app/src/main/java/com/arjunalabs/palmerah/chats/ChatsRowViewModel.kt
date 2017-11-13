@@ -3,13 +3,17 @@ package com.arjunalabs.palmerah.chats
 import com.arjunalabs.palmerah.data.FriendWithLastMessage
 import io.reactivex.Observable
 import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
 /**
  * Created by bobbyprabowo on 14/10/17.
  */
-class ChatsRowViewModel {
+class ChatsRowViewModel(private val subscriberScheduler: Scheduler, private val observerScheduler: Scheduler) {
+
+    constructor() : this(Schedulers.computation(), AndroidSchedulers.mainThread())
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -17,7 +21,7 @@ class ChatsRowViewModel {
     val lastMessageSubject : BehaviorSubject<String> = BehaviorSubject.create()
     val avatarUrlSubject : BehaviorSubject<String> = BehaviorSubject.create()
 
-    fun bind(friend: FriendWithLastMessage, subscriberScheduler: Scheduler, observerScheduler: Scheduler) {
+    fun bind(friend: FriendWithLastMessage) {
 
         compositeDisposable.add(
                 Observable.just(friend.friend?.name)

@@ -76,7 +76,7 @@ class ChatsAdapter : RecyclerView.Adapter<ChatsAdapter.RecentsViewHolder>() {
                 Glide.with(avatarImageView).load(it).into(avatarImageView)
             }.addTo(compositeDisposable)
 
-            chatsRowViewModel.bind(friend, Schedulers.computation(), AndroidSchedulers.mainThread())
+            chatsRowViewModel.bind(friend)
         }
 
         fun unBind() {

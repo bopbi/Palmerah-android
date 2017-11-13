@@ -1,7 +1,9 @@
 package com.arjunalabs.palmerah
 
 import com.arjunalabs.palmerah.chats.ChatsRowViewModel
+import com.arjunalabs.palmerah.data.Friend
 import com.arjunalabs.palmerah.data.FriendWithLastMessage
+import com.arjunalabs.palmerah.data.LastMessage
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.schedulers.Schedulers
@@ -15,15 +17,23 @@ class ChatsRowViewModelTest {
 
     @Test
     fun shouldDisplayName() {
-        val viewModel = ChatsRowViewModel()
+        val viewModel = ChatsRowViewModel(observerScheduler = Schedulers.trampoline(), subscriberScheduler = Schedulers.trampoline())
         val mockedName = "Bob"
-        val mockedFriend : FriendWithLastMessage = mock()
-        whenever(mockedFriend.friend?.name).thenReturn(mockedName)
+        val mockedAvatarUrl = "https://sample"
+        val mockedFriend : Friend = mock()
+        val mockedFriendWithLastMessage : FriendWithLastMessage = mock()
+        val mockedLastMessage : LastMessage = mock()
+        whenever(mockedLastMessage.text).thenReturn("last message")
+        val mockedMessages : List<LastMessage> = listOf(mockedLastMessage)
 
-        val testSubscriber = viewModel.nameSubject.subscribeOn(Schedulers.trampoline())
-                .observeOn(Schedulers.trampoline()).test()
+        whenever(mockedFriendWithLastMessage.friend).thenReturn(mockedFriend)
+        whenever(mockedFriendWithLastMessage.messages).thenReturn(mockedMessages)
+        whenever(mockedFriendWithLastMessage.friend?.name).thenReturn(mockedName)
+        whenever(mockedFriendWithLastMessage.friend?.avatarUrl).thenReturn(mockedAvatarUrl)
 
-        viewModel.bind(mockedFriend, Schedulers.trampoline(), Schedulers.trampoline())
+        val testSubscriber = viewModel.nameSubject.test()
+
+        viewModel.bind(mockedFriendWithLastMessage)
 
         testSubscriber.assertValue(mockedName)
     }
