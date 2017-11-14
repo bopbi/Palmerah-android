@@ -2,6 +2,7 @@ package com.arjunalabs.palmerah.data
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Transaction
 import io.reactivex.Flowable
 
 /**
@@ -10,9 +11,11 @@ import io.reactivex.Flowable
 @Dao
 interface FriendWithMessageDAO {
 
+    @Transaction
     @Query("SELECT * from friends")
     fun getFriendWithMessages(): Flowable<List<FriendWithMessage>>
 
+    @Transaction
     @Query("SELECT * from friends where id = :id")
     fun getFriendWithMessagesForFriendId(id: Int): Flowable<FriendWithMessage>
 }
