@@ -1,5 +1,7 @@
 # Palmerah Android
 
+[![CircleCI](https://circleci.com/gh/bopbi/Palmerah-android.svg?style=svg)](https://circleci.com/gh/bopbi/Palmerah-android)
+
 Android messaging app
 
 ## License
