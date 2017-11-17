@@ -17,7 +17,7 @@ class ChatsRowViewModelTest {
 
     @Test
     fun shouldDisplayName() {
-        val viewModel = ChatsRowViewModel(observerScheduler = Schedulers.trampoline(), subscriberScheduler = Schedulers.trampoline())
+        val viewModel = ChatsRowViewModel()
         val mockedName = "Bob"
         val mockedAvatarUrl = "https://sample"
         val mockedFriend : Friend = mock()
@@ -33,7 +33,7 @@ class ChatsRowViewModelTest {
 
         val testSubscriber = viewModel.nameSubject.test()
 
-        viewModel.bind(mockedFriendWithLastMessage)
+        viewModel.bind(Schedulers.trampoline(), Schedulers.trampoline(), mockedFriendWithLastMessage)
 
         testSubscriber.assertValue(mockedName)
     }
