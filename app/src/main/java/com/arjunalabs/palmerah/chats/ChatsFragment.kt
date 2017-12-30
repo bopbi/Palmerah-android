@@ -56,7 +56,7 @@ class ChatsFragment : Fragment() {
 
         AndroidSupportInjection.inject(this)
 
-        disposable.add(viewModel.getAllFriend()
+        disposable.add(viewModel.getChatList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

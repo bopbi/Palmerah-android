@@ -12,8 +12,8 @@ import io.reactivex.Flowable
 interface FriendWithMessageDAO {
 
     @Transaction
-    @Query("SELECT * from friends")
-    fun getFriendWithMessages(): Flowable<List<FriendWithMessage>>
+    @Query("SELECT * from friends where lastMessageId > 0")
+    fun getFriendWithLastMessages(): Flowable<List<FriendWithMessage>>
 
     @Transaction
     @Query("SELECT * from friends where id = :id")

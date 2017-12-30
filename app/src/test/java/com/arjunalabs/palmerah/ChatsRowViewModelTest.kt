@@ -2,8 +2,8 @@ package com.arjunalabs.palmerah
 
 import com.arjunalabs.palmerah.chats.ChatsRowViewModel
 import com.arjunalabs.palmerah.data.Friend
-import com.arjunalabs.palmerah.data.FriendWithLastMessage
-import com.arjunalabs.palmerah.data.LastMessage
+import com.arjunalabs.palmerah.data.FriendWithMessage
+import com.arjunalabs.palmerah.data.Message
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.schedulers.Schedulers
@@ -21,10 +21,10 @@ class ChatsRowViewModelTest {
         val mockedName = "Bob"
         val mockedAvatarUrl = "https://sample"
         val mockedFriend : Friend = mock()
-        val mockedFriendWithLastMessage : FriendWithLastMessage = mock()
-        val mockedLastMessage : LastMessage = mock()
+        val mockedFriendWithLastMessage : FriendWithMessage = mock()
+        val mockedLastMessage : Message = mock()
         whenever(mockedLastMessage.text).thenReturn("last message")
-        val mockedMessages : List<LastMessage> = listOf(mockedLastMessage)
+        val mockedMessages : List<Message> = listOf(mockedLastMessage)
 
         whenever(mockedFriendWithLastMessage.friend).thenReturn(mockedFriend)
         whenever(mockedFriendWithLastMessage.messages).thenReturn(mockedMessages)

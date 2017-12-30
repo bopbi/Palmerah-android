@@ -12,6 +12,6 @@ class FriendWithMessage {
     @Embedded
     var friend : Friend? = null
 
-    @Relation(parentColumn = "id", entityColumn = "friend_id")
-    var messages: List<Message> = ArrayList()
+    @Relation(parentColumn = "id", entityColumn = "friendId")
+    var messages: List<Message> = listOf()
 }

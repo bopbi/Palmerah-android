@@ -9,14 +9,12 @@ import com.arjunalabs.palmerah.data.*
 /**
  * Created by bobbyprabowo on 9/2/17.
  */
-@Database(entities = arrayOf(Friend::class, Message::class, LastMessage::class), version = 1)
+@Database(entities = [Friend::class, Message::class], version = 1)
 abstract class AppDB : RoomDatabase() {
 
     abstract fun messageDAO() : MessageDAO
-    abstract fun lastMessageDAO() : LastMessageDAO
     abstract fun friendDAO() : FriendDAO
     abstract fun friendWithMessageDAO() : FriendWithMessageDAO
-    abstract fun friendWithLastMessageDAO() : FriendWithLastMessageDAO
 
     companion object {
 

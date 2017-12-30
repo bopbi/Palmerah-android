@@ -1,6 +1,6 @@
 package com.arjunalabs.palmerah.chats
 
-import com.arjunalabs.palmerah.data.FriendWithLastMessage
+import com.arjunalabs.palmerah.data.FriendWithMessage
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,20 +19,22 @@ class ChatsRowViewModel {
     val lastMessageSubject : BehaviorSubject<String> = BehaviorSubject.create()
     val avatarUrlSubject : BehaviorSubject<String> = BehaviorSubject.create()
 
-    fun bind(friend: FriendWithLastMessage) = bind(Schedulers.io(), AndroidSchedulers.mainThread(), friend)
+    fun bind(friendWithMessage: FriendWithMessage) = bind(Schedulers.computation(), AndroidSchedulers.mainThread(), friendWithMessage)
 
-    fun bind(subscriberScheduler: Scheduler, observerScheduler: Scheduler, friend: FriendWithLastMessage) {
+    fun bind(subscriberScheduler: Scheduler, observerScheduler: Scheduler, friendWithMessage: FriendWithMessage) {
 
         compositeDisposable.add(
-                Observable.just(friend.friend?.name)
+                Observable.just(friendWithMessage.friend?.name)
                         .subscribeOn(subscriberScheduler)
                         .observeOn(observerScheduler)
                         .subscribe {
-                            nameSubject.onNext(it)
+                            if (it != null) {
+                                nameSubject.onNext(it)
+                            }
                         })
 
         compositeDisposable.add(
-                Observable.just(friend.messages.get(0).text)
+                Observable.just(friendWithMessage.messages[0].text)
                         .subscribeOn(subscriberScheduler)
                         .observeOn(observerScheduler)
                         .subscribe {
@@ -40,11 +42,13 @@ class ChatsRowViewModel {
                         })
 
         compositeDisposable.add(
-                Observable.just(friend.friend?.avatarUrl)
+                Observable.just(friendWithMessage.friend?.avatarUrl)
                         .subscribeOn(subscriberScheduler)
                         .observeOn(observerScheduler)
                         .subscribe {
-                            avatarUrlSubject.onNext(it)
+                            if (it != null) {
+                                avatarUrlSubject.onNext(it)
+                            }
                         })
     }
 

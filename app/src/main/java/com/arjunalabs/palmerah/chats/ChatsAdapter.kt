@@ -9,20 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.arjunalabs.palmerah.R
 import com.arjunalabs.palmerah.chatroom.ChatroomActivity
-import com.arjunalabs.palmerah.data.Friend
-import com.arjunalabs.palmerah.data.FriendWithLastMessage
+import com.arjunalabs.palmerah.data.FriendWithMessage
 import com.bumptech.glide.Glide
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by bobbyprabowo on 9/2/17.
  */
 class ChatsAdapter : RecyclerView.Adapter<ChatsAdapter.RecentsViewHolder>() {
 
-    var friendList : List<FriendWithLastMessage>? = null
+    var friendList : List<FriendWithMessage>? = null
 
     override fun onBindViewHolder(holder: RecentsViewHolder?, position: Int) {
         if (friendList != null) {
@@ -47,7 +44,7 @@ class ChatsAdapter : RecyclerView.Adapter<ChatsAdapter.RecentsViewHolder>() {
         private var avatarImageView : ImageView? = itemView?.findViewById(R.id.image_row_recents)
         private val chatsRowViewModel = ChatsRowViewModel()
         private val compositeDisposable = CompositeDisposable()
-        private var friend : FriendWithLastMessage? = null
+        private var friend : FriendWithMessage? = null
 
         init {
             itemView?.setOnClickListener {
@@ -59,7 +56,7 @@ class ChatsAdapter : RecyclerView.Adapter<ChatsAdapter.RecentsViewHolder>() {
         }
 
 
-        fun bind(friend: FriendWithLastMessage) {
+        fun bind(friend: FriendWithMessage) {
 
             this.friend = friend
             nameTextView?.text = "Loading..."

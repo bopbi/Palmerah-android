@@ -12,7 +12,8 @@ data class Friend(
         val userId: Long,
         val name: String,
         val avatarUrl: String,
-        val userStatus: String) {
+        val userStatus: String,
+        var lastMessageId: Long) {
 
     @PrimaryKey(autoGenerate = true) var id: Long = 0
 }

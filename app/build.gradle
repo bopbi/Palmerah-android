@@ -48,6 +48,7 @@ android {
 
 dependencies {
 
+    ext.support_version = '27.0.2'
     def latest_version = 'latest.release'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -55,10 +56,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:27.0.0'
-    implementation 'com.android.support:design:27.0.0'
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:design:$support_version"
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'com.github.bopbi.rxwsocket:RxWSocket:1.0.4'
+    implementation "com.github.bopbi.rxwsocket:RxWSocket:1.0.6"
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
@@ -97,8 +98,8 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:2.12"
 
     // glide
-    implementation 'com.github.bumptech.glide:glide:4.3.1'
-    kapt 'com.github.bumptech.glide:compiler:4.3.1'
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    kapt 'com.github.bumptech.glide:compiler:4.4.0'
 
     // moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.5.0'

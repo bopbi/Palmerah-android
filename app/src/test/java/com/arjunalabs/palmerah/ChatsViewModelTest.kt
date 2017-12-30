@@ -1,8 +1,9 @@
 package com.arjunalabs.palmerah
 
 import com.arjunalabs.palmerah.chats.ChatsViewModel
-import com.arjunalabs.palmerah.data.FriendWithLastMessage
-import com.arjunalabs.palmerah.data.FriendWithLastMessageDAO
+import com.arjunalabs.palmerah.data.FriendWithMessage
+import com.arjunalabs.palmerah.data.FriendWithMessageDAO
+import com.arjunalabs.palmerah.repository.ChatsRepository
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import io.reactivex.Flowable
@@ -18,16 +19,18 @@ class ChatsViewModelTest {
     @Test
     fun shouldGetAllFriend() {
 
-        val mockedList = mutableListOf<FriendWithLastMessage>()
+        val mockedList = mutableListOf<FriendWithMessage>()
         (1..10).forEach {
             mockedList.add(mock())
         }
         val f = Flowable.just(mockedList.toList())
 
-        val mockedFriendWithLastMessageDAO = mock<FriendWithLastMessageDAO> {
-            on { getFriendLastWithMessages() } doReturn f
+        val mockedFriendWithLastMessageDAO = mock<FriendWithMessageDAO> {
+            on { getFriendWithLastMessages() } doReturn f
         }
-        val viewModel = ChatsViewModel(mockedFriendWithLastMessageDAO)
-        viewModel.getAllFriend(Schedulers.trampoline(), Schedulers.trampoline()).test().assertComplete()
+
+        val mockedChatRepository = ChatsRepository(Schedulers.trampoline(), Schedulers.trampoline(), mockedFriendWithLastMessageDAO)
+        val viewModel = ChatsViewModel(mockedChatRepository)
+        viewModel.getChatList().test().assertComplete()
     }
 }

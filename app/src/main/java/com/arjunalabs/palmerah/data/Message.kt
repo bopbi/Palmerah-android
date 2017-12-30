@@ -8,7 +8,7 @@ import java.util.*
  * Created by bobbyprabowo on 9/2/17.
  */
 @Entity(tableName = "messages")
-data class Message(val friend_id: Long, val text: String, val date: Long, val isSender: Boolean) {
+data class Message(val friendId: Long, val text: String, val date: Long, val isSender: Boolean) {
 
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 

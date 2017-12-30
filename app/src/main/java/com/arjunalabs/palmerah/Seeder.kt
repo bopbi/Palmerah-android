@@ -3,7 +3,7 @@ package com.arjunalabs.palmerah
 import android.content.Context
 import android.util.Log
 import com.arjunalabs.palmerah.data.Friend
-import com.arjunalabs.palmerah.data.LastMessage
+import com.arjunalabs.palmerah.data.Message
 import com.arjunalabs.palmerah.db.AppDB
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,17 +31,21 @@ class Seeder(private val context: Context) {
                 (1..100)
                         .map {
                             Log.i("Seeder", "generate")
-                            Friend(userId = it.toLong()
-                                    , name = "Friend $it"
-                                    , avatarUrl = "http://plchldr.co/i/480x480"
-                                    , userStatus = "Dummy Status $it")
+                            Friend(userId = it.toLong(),
+                                    name = "Friend $it",
+                                    avatarUrl = "http://plchldr.co/i/480x480",
+                                    userStatus = "Dummy Status $it",
+                                    lastMessageId = 0)
                         }
                         .forEach {
                             Log.i("Seeder", "insert")
                             val friendId = appDB.friendDAO().insertFriend(it)
 
-                            val lastMessage = LastMessage(friend_id = friendId, date = Date().time, isSender = true, text = "AAAAA")
-                            appDB.lastMessageDAO().insertLastMessage(lastMessage)
+                            val message = Message(friendId = friendId, date = Date().time, isSender = true, text = "AAAAA")
+                            val messageId = appDB.messageDAO().insertMessage(message)
+                            it.id = friendId
+                            it.lastMessageId = messageId
+                            appDB.friendDAO().insertFriend(it)
                         }
             }
                     .subscribeOn(Schedulers.io())
