@@ -49,8 +49,7 @@ class ChatsAdapter : RecyclerView.Adapter<ChatsAdapter.RecentsViewHolder>() {
         init {
             itemView?.setOnClickListener {
                 val chatRoomIntent = Intent(itemView.context, ChatroomActivity::class.java)
-
-                chatRoomIntent.extras.putString("FRIEND","")
+                chatRoomIntent.putExtra("FRIEND","")
                 itemView.context.startActivity(chatRoomIntent)
             }
         }

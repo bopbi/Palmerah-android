@@ -10,6 +10,6 @@ class ChatroomViewModelTest {
 
     @Test
     fun testLoad() {
-
+        assert(true)
     }
 }
