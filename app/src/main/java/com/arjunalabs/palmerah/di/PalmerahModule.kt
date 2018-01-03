@@ -15,5 +15,5 @@ abstract class PalmerahModule {
     abstract fun contributeMainActivity() : MainActivity
 
     @ContributesAndroidInjector
-    abstract fun contributeRecentsFragment() : ChatsFragment
+    abstract fun contributeChatsFragment() : ChatsFragment
 }

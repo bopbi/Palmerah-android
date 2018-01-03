@@ -20,10 +20,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     private lateinit var bottomNavigation : BottomNavigationView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         bottomNavigation = findViewById(R.id.bottom_navigation_main_nav)
