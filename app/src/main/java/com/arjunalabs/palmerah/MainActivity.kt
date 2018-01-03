@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import com.arjunalabs.palmerah.chats.ChatsFragment
-import com.arjunalabs.palmerah.settings.SettingsFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -21,9 +19,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 
     private lateinit var bottomNavigation : BottomNavigationView
-    private lateinit var chatsFragment: ChatsFragment
-    private lateinit var settingsFragment : SettingsFragment
-    private lateinit var selectedFragment : Fragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +31,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         val mainPagerAdapter = MainPageAdapter(supportFragmentManager)
         val viewPager = findViewById<ViewPager>(R.id.pager_main)
         viewPager.adapter = mainPagerAdapter
-        
+
 
         bottomNavigation.setOnNavigationItemSelectedListener{
             when (it.itemId) {
