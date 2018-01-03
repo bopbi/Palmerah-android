@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
-import com.arjunalabs.palmerah.contacts.ContactsFragment
+import android.support.v4.view.ViewPager
 import com.arjunalabs.palmerah.chats.ChatsFragment
 import com.arjunalabs.palmerah.settings.SettingsFragment
 import dagger.android.AndroidInjection
@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private lateinit var settingsFragment : SettingsFragment
     private lateinit var selectedFragment : Fragment
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
@@ -32,15 +33,16 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         bottomNavigation = findViewById(R.id.bottom_navigation_main_nav)
 
-        chatsFragment = ChatsFragment()
-        settingsFragment = SettingsFragment()
+        val mainPagerAdapter = MainPageAdapter(supportFragmentManager)
+        val viewPager = findViewById<ViewPager>(R.id.pager_main)
+        viewPager.adapter = mainPagerAdapter
+        
 
         bottomNavigation.setOnNavigationItemSelectedListener{
             when (it.itemId) {
-                R.id.menu_chats -> selectedFragment = chatsFragment
-                R.id.menu_settings -> selectedFragment = settingsFragment
+                R.id.menu_chats -> viewPager.currentItem = 0
+                R.id.menu_settings -> viewPager.currentItem = 1
             }
-            supportFragmentManager.beginTransaction().replace(R.id.frame_main, selectedFragment).commitNow()
             true
         }
 

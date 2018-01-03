@@ -34,6 +34,8 @@ class ChatsViewModel @Inject constructor(private val chatsUseCase: ChatsUseCase)
                 .map { handleIntent(it) }
                 .flatMap {  chatsUseCase.handleAction(it) }
                 .map { handleResult(it) }
+                .replay(1)
+                .autoConnect(0)
     }
 
     private fun handleResult(result: ChatsUseCaseResult) : ChatsFragmentViewState {

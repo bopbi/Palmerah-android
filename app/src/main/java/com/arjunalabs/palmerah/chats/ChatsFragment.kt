@@ -1,6 +1,7 @@
 package com.arjunalabs.palmerah.chats
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -36,10 +37,13 @@ class ChatsFragment : Fragment() {
 
     private val scopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChatsViewModel::class.java)
     }
 
@@ -58,9 +62,8 @@ class ChatsFragment : Fragment() {
         return recentsView
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.processIntent(chatIntentSubject)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.states()
                 .subscribeOn(Schedulers.computation())
@@ -69,14 +72,13 @@ class ChatsFragment : Fragment() {
                 .subscribe {
                     handleViewState(it)
                 }
+        viewModel.processIntent(chatIntentSubject)
     }
 
     override fun onResume() {
         super.onResume()
         if (viewModel.viewState.data.isEmpty()) {
             chatIntentSubject.onNext(InitialIntent)
-        } else {
-            handleViewState(viewModel.viewState)
         }
     }
 
