@@ -73,8 +73,10 @@ class ChatsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (viewModel.viewState.data.isNotEmpty()) {
+        if (viewModel.viewState.data.isEmpty()) {
             chatIntentSubject.onNext(InitialIntent)
+        } else {
+            handleViewState(viewModel.viewState)
         }
     }
 
