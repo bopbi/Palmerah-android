@@ -1,12 +1,15 @@
 package com.arjunalabs.palmerah
 
+import com.arjunalabs.palmerah.chats.ChatsFragmentIntent
 import com.arjunalabs.palmerah.chats.ChatsViewModel
 import com.arjunalabs.palmerah.data.FriendWithMessage
 import com.arjunalabs.palmerah.data.FriendWithMessageDAO
 import com.arjunalabs.palmerah.repository.ChatsRepository
+import com.arjunalabs.palmerah.usecase.ChatsUseCase
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 
@@ -30,7 +33,12 @@ class ChatsViewModelTest {
         }
 
         val mockedChatRepository = ChatsRepository(Schedulers.trampoline(), Schedulers.trampoline(), mockedFriendWithLastMessageDAO)
-        val viewModel = ChatsViewModel(mockedChatRepository)
-        viewModel.getChatList().test().assertComplete()
+        val chatUseCase = ChatsUseCase(mockedChatRepository)
+        val viewModel = ChatsViewModel(chatUseCase)
+        val testObserver = viewModel.states().test()
+
+        viewModel.processIntent(Observable.just(ChatsFragmentIntent.InitialIntent))
+
+        testObserver.assertComplete()
     }
 }

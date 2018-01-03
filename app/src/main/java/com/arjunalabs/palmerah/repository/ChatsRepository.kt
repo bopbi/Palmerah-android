@@ -2,7 +2,7 @@ package com.arjunalabs.palmerah.repository
 
 import com.arjunalabs.palmerah.data.FriendWithMessage
 import com.arjunalabs.palmerah.data.FriendWithMessageDAO
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,8 +14,9 @@ class ChatsRepository(private val subscriberScheduler: Scheduler,private val obs
 
     constructor(friendWithMessageDAO: FriendWithMessageDAO) : this(Schedulers.io(), AndroidSchedulers.mainThread(), friendWithMessageDAO)
 
-    fun getAllFriend() : Flowable<List<FriendWithMessage>> = friendWithMessageDAO
+    fun getFriendWithLastMessages() : Observable<List<FriendWithMessage>> = friendWithMessageDAO
             .getFriendWithLastMessages()
+            .toObservable()
             .subscribeOn(subscriberScheduler)
             .observeOn(observerScheduler)
 }

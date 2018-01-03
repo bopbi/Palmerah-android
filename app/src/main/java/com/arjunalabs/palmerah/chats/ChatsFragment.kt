@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arjunalabs.palmerah.R
+import com.arjunalabs.palmerah.chats.ChatsFragmentIntent.InitialIntent
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import com.uber.autodispose.kotlin.autoDisposable
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 /**
@@ -22,13 +25,17 @@ import javax.inject.Inject
 
 class ChatsFragment : Fragment() {
 
-    private lateinit var recyclerRecents : RecyclerView
+    private lateinit var recyclerChats: RecyclerView
     private lateinit var chatsAdapter: ChatsAdapter
     private lateinit var viewModel : ChatsViewModel
     private val disposable = CompositeDisposable()
+    private val chatIntentSubject : PublishSubject<ChatsFragmentIntent> = PublishSubject.create()
 
     @Inject
     lateinit var viewModelFactory : ChatsViewModelFactory
+
+    private val scopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -42,10 +49,10 @@ class ChatsFragment : Fragment() {
         val recentsView = inflater.inflate(R.layout.fragment_recents, container, false)
 
         if (recentsView != null) {
-            recyclerRecents = recentsView.findViewById(R.id.recycler_recents)
+            recyclerChats = recentsView.findViewById(R.id.recycler_recents)
             chatsAdapter = ChatsAdapter()
-            recyclerRecents.adapter = chatsAdapter
-            recyclerRecents.layoutManager = LinearLayoutManager(activity)
+            recyclerChats.adapter = chatsAdapter
+            recyclerChats.layoutManager = LinearLayoutManager(activity)
         }
 
         return recentsView
@@ -53,18 +60,22 @@ class ChatsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        viewModel.processIntent(chatIntentSubject)
 
-        AndroidSupportInjection.inject(this)
-
-        disposable.add(viewModel.getChatList()
-                .subscribeOn(Schedulers.io())
+        viewModel.states()
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    chatsAdapter.friendList = it
-                    chatsAdapter.notifyDataSetChanged()
-                }, {
-                    error -> Log.e(TAG, "Unable to get recents", error)
-                }))
+                .autoDisposable(scopeProvider)
+                .subscribe {
+                    handleViewState(it)
+                }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.viewState.data.isNotEmpty()) {
+            chatIntentSubject.onNext(InitialIntent)
+        }
     }
 
     override fun onStop() {
@@ -72,8 +83,19 @@ class ChatsFragment : Fragment() {
         disposable.clear()
     }
 
-    companion object {
-        val TAG = ChatsFragment::class.java.simpleName!!
+    fun handleViewState(viewState: ChatsFragmentViewState) {
+        if (viewState.isError) {
+
+        }
+
+        if (viewState.isLoading) {
+
+        }
+
+        if (viewState.data.isNotEmpty()) {
+            chatsAdapter.friendList = viewState.data
+            chatsAdapter.notifyDataSetChanged()
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import com.arjunalabs.palmerah.db.AppDB
 import com.arjunalabs.palmerah.chats.ChatsViewModelFactory
 import com.arjunalabs.palmerah.data.*
 import com.arjunalabs.palmerah.repository.ChatsRepository
+import com.arjunalabs.palmerah.usecase.ChatsUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -31,7 +32,10 @@ class RoomModule(val context: Context) {
     fun provideChatsRepository() : ChatsRepository = ChatsRepository(provideFriendWithMessagesDAO())
 
     @Provides
-    fun provideChatsViewModelFactory() = ChatsViewModelFactory(provideChatsRepository())
+    fun provideChatsUseCase() : ChatsUseCase = ChatsUseCase(provideChatsRepository())
+
+    @Provides
+    fun provideChatsViewModelFactory() = ChatsViewModelFactory(provideChatsUseCase())
 
 
 }
