@@ -5,4 +5,5 @@ package com.arjunalabs.palmerah.chats
  */
 sealed class ChatsFragmentIntent {
     object InitialIntent : ChatsFragmentIntent()
+    object fabClickIntent : ChatsFragmentIntent()
 }

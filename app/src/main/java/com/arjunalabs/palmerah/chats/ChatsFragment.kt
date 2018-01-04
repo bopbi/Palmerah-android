@@ -3,6 +3,7 @@ package com.arjunalabs.palmerah.chats
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,9 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.arjunalabs.palmerah.R
 import com.arjunalabs.palmerah.chats.ChatsFragmentIntent.InitialIntent
+import com.arjunalabs.palmerah.chats.ChatsFragmentIntent.fabClickIntent
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposable
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -26,6 +29,7 @@ import javax.inject.Inject
 
 class ChatsFragment : Fragment() {
 
+    private lateinit var fabChats: FloatingActionButton
     private lateinit var recyclerChats: RecyclerView
     private lateinit var chatsAdapter: ChatsAdapter
     private lateinit var viewModel : ChatsViewModel
@@ -53,10 +57,12 @@ class ChatsFragment : Fragment() {
         val recentsView = inflater.inflate(R.layout.fragment_recents, container, false)
 
         if (recentsView != null) {
-            recyclerChats = recentsView.findViewById(R.id.recycler_recents)
+            recyclerChats = recentsView.findViewById(R.id.recycler_chats)
             chatsAdapter = ChatsAdapter()
             recyclerChats.adapter = chatsAdapter
             recyclerChats.layoutManager = LinearLayoutManager(activity)
+
+            fabChats = recentsView.findViewById(R.id.fab_chats)
         }
 
         return recentsView
@@ -72,7 +78,7 @@ class ChatsFragment : Fragment() {
                 .subscribe {
                     handleViewState(it)
                 }
-        viewModel.processIntent(chatIntentSubject)
+        viewModel.processIntent(intents())
     }
 
     override fun onResume() {
@@ -100,6 +106,18 @@ class ChatsFragment : Fragment() {
             chatsAdapter.friendList = viewState.data
             chatsAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun fabClicks() : Observable<ChatsFragmentIntent> {
+        return Observable.create { emit->
+            fabChats.setOnClickListener {
+                emit.onNext(fabClickIntent)
+            }
+        }
+    }
+
+    private fun intents() : Observable<ChatsFragmentIntent> {
+        return Observable.merge(chatIntentSubject, fabClicks())
     }
 
 }

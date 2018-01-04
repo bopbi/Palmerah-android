@@ -25,6 +25,7 @@ class ChatsViewModel @Inject constructor(private val chatsUseCase: ChatsUseCase)
     private fun handleIntent(intent: ChatsFragmentIntent) : ChatsUseCaseAction {
         return when (intent) {
             is ChatsFragmentIntent.InitialIntent -> LoadFromDB
+            is ChatsFragmentIntent.fabClickIntent -> LoadFromDB
         }
     }
 
@@ -32,7 +33,7 @@ class ChatsViewModel @Inject constructor(private val chatsUseCase: ChatsUseCase)
     fun states() : Observable<ChatsFragmentViewState> {
         return chatsIntent
                 .map { handleIntent(it) }
-                .flatMap {  chatsUseCase.handleAction(it) }
+                .compose(chatsUseCase.handleAction)
                 .map { handleResult(it) }
                 .replay(1)
                 .autoConnect(0)
