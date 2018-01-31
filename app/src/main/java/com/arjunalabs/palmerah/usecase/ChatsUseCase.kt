@@ -2,8 +2,6 @@ package com.arjunalabs.palmerah.usecase
 
 import com.arjunalabs.palmerah.data.FriendWithMessage
 import com.arjunalabs.palmerah.repository.ChatsRepository
-import com.arjunalabs.palmerah.usecase.ChatsUseCaseAction.LoadFromDB
-import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.subjects.PublishSubject
 
@@ -19,7 +17,7 @@ class ChatsUseCase (private val chatsRepository: ChatsRepository) {
     }
 
     private fun createResult(friendWithMessages: List<FriendWithMessage>) : ChatsUseCaseResult {
-        return ChatsUseCaseResult.data(friendWithMessages)
+        return ChatsUseCaseResult(false, null, friendWithMessages)
     }
 
     private val loadFromDB = ObservableTransformer<ChatsUseCaseAction, ChatsUseCaseResult> { action ->
@@ -27,7 +25,7 @@ class ChatsUseCase (private val chatsRepository: ChatsRepository) {
             chatsRepository
                     .getFriendWithLastMessages()
                     .doOnError {
-                        sideEffectSubject.onNext(ChatsUseCaseResult.error(it))
+                        sideEffectSubject.onNext(ChatsUseCaseResult(false,it, emptyList()))
                     }
                     .onErrorReturn { emptyList() }
                     .filter{ it.isNotEmpty() }

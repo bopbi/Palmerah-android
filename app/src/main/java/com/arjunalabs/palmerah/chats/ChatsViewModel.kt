@@ -24,8 +24,8 @@ class ChatsViewModel @Inject constructor(private val chatsUseCase: ChatsUseCase)
 
     private fun handleIntent(intent: ChatsFragmentIntent) : ChatsUseCaseAction {
         return when (intent) {
-            is ChatsFragmentIntent.InitialIntent -> LoadFromDB
-            is ChatsFragmentIntent.fabClickIntent -> LoadFromDB
+            ChatsFragmentIntent.InitialIntent -> LoadFromDB
+            ChatsFragmentIntent.FabClickIntent -> LoadFromDB
         }
     }
 
@@ -40,17 +40,11 @@ class ChatsViewModel @Inject constructor(private val chatsUseCase: ChatsUseCase)
     }
 
     private fun handleResult(result: ChatsUseCaseResult) : ChatsFragmentViewState {
-        return when (result) {
-            is ChatsUseCaseResult.loading -> {
-                ChatsFragmentViewState(false, true, emptyList())
-            }
-            is ChatsUseCaseResult.error -> {
-                ChatsFragmentViewState(true, false, emptyList())
-            }
-            is ChatsUseCaseResult.data -> {
-                viewState = ChatsFragmentViewState(false, false, result.data)
-                viewState
-            }
+        return when {
+            result.isLoading -> ChatsFragmentViewState(false, true, emptyList())
+            result.error != null -> ChatsFragmentViewState(true, false, emptyList())
+            result.data.isNotEmpty() -> ChatsFragmentViewState(false, false, result.data)
+            else -> ChatsFragmentViewState(false, false, emptyList())
         }
     }
 

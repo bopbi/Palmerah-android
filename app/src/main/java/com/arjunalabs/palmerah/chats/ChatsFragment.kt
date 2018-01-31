@@ -2,6 +2,7 @@ package com.arjunalabs.palmerah.chats
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -12,7 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.arjunalabs.palmerah.R
 import com.arjunalabs.palmerah.chats.ChatsFragmentIntent.InitialIntent
-import com.arjunalabs.palmerah.chats.ChatsFragmentIntent.fabClickIntent
+import com.arjunalabs.palmerah.chats.ChatsFragmentIntent.FabClickIntent
+import com.arjunalabs.palmerah.contacts.ContactActivity
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposable
 import dagger.android.support.AndroidSupportInjection
@@ -63,6 +65,10 @@ class ChatsFragment : Fragment() {
             recyclerChats.layoutManager = LinearLayoutManager(activity)
 
             fabChats = recentsView.findViewById(R.id.fab_chats)
+            fabChats.setOnClickListener {
+                val intent = Intent(activity, ContactActivity::class.java)
+                activity?.startActivity(intent)
+            }
         }
 
         return recentsView
@@ -108,16 +114,9 @@ class ChatsFragment : Fragment() {
         }
     }
 
-    private fun fabClicks() : Observable<ChatsFragmentIntent> {
-        return Observable.create { emit->
-            fabChats.setOnClickListener {
-                emit.onNext(fabClickIntent)
-            }
-        }
-    }
-
     private fun intents() : Observable<ChatsFragmentIntent> {
-        return Observable.merge(chatIntentSubject, fabClicks())
+        //return Observable.merge(chatIntentSubject)
+        return chatIntentSubject
     }
 
 }

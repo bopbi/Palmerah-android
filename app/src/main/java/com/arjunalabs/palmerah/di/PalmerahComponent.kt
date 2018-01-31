@@ -11,5 +11,5 @@ import javax.inject.Singleton
  * Created by bobbyprabowo on 08/11/17.
  */
 @Singleton
-@Component(modules = arrayOf(AndroidInjectionModule::class, PalmerahModule::class, RoomModule::class))
+@Component(modules = [(AndroidInjectionModule::class), (PalmerahModule::class), (RoomModule::class)])
 interface PalmerahComponent : AndroidInjector<MainApplication>
